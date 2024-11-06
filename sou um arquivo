@@ -1,0 +1,153 @@
+public class Pessoa {
+    private String nome;
+    private double notaEtapa1;
+    private double notaEtapa2;
+    private double media;
+
+    // Construtor
+    public Pessoa(String nome, double notaEtapa1, double notaEtapa2) {
+        this.nome = nome;
+        this.notaEtapa1 = notaEtapa1;
+        this.notaEtapa2 = notaEtapa2;
+        this.media = (notaEtapa1 + notaEtapa2) / 2.0; // Calcula a média
+    }
+
+    // Métodos para acessar os dados (getters)
+    public String getNome() {
+        return nome;
+    }
+
+    public double getNotaEtapa1() {
+        return notaEtapa1;
+    }
+
+    public double getNotaEtapa2() {
+        return notaEtapa2;
+    }
+
+    public double getMedia() {
+        return media;
+    }
+
+    // Método para verificar se a pessoa foi aprovada
+    public boolean isAprovado() {
+        return media >= 70.0;
+    }
+
+    @Override
+    public String toString() {
+        return nome + ", " + notaEtapa1 + ", " + notaEtapa2 + ", MEDIA = " + media;
+    }
+}
+import java.util.Scanner;
+
+public class Concurso {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Leitura da quantidade de pessoas
+        System.out.print("Qual a quantidade de pessoas? ");
+        int N = scanner.nextInt();
+        scanner.nextLine(); // Consumir a linha em branco após o número
+
+        Pessoa[] participantes = new Pessoa[N];
+
+        // Leitura dos dados dos participantes
+        for (int i = 0; i < N; i++) {
+            System.out.println("Digite os dados da " + (i + 1) + "a pessoa:");
+            System.out.print("Nome: ");
+            String nome = scanner.nextLine();
+            System.out.print("Nota etapa 1: ");
+            double notaEtapa1 = scanner.nextDouble();
+            System.out.print("Nota etapa 2: ");
+            double notaEtapa2 = scanner.nextDouble();
+            scanner.nextLine(); // Consumir a linha em branco
+
+            // Criar o objeto Pessoa e armazenar no vetor
+            participantes[i] = new Pessoa(nome, notaEtapa1, notaEtapa2);
+        }
+
+        // Exibir a tabela de pessoas
+        System.out.println("\n### TABELA ###");
+        for (Pessoa p : participantes) {
+            System.out.println(p);
+        }
+
+        // Lista de pessoas aprovadas
+        System.out.println("\n### PESSOAS APROVADAS ###");
+        double somaDasMedias = 0.0;
+        int aprovados = 0;
+        Pessoa maiorMediaPessoa = participantes[0];
+
+        for (Pessoa p : participantes) {
+            if (p.isAprovado()) {
+                System.out.println(p.getNome());
+                somaDasMedias += p.getMedia();
+                aprovados++;
+
+                if (p.getMedia() > maiorMediaPessoa.getMedia()) {
+                    maiorMediaPessoa = p;
+                }
+            }
+        }
+
+        // Porcentagem de aprovação
+        double porcentagemAprovacao = (double) aprovados / N * 100;
+        System.out.println("\nPorcentagem de aprovação: " + String.format("%.1f", porcentagemAprovacao) + " %");
+
+        // Maior média
+        System.out.println("Maior média: " + maiorMediaPessoa.getNome());
+
+        // Média dos aprovados
+        if (aprovados > 0) {
+            double mediaAprovados = somaDasMedias / aprovados;
+            System.out.println("Nota média dos aprovados: " + String.format("%.2f", mediaAprovados));
+        } else {
+            System.out.println("Não há candidatos aprovados");
+        }
+    }
+}
+Qual a quantidade de pessoas? 4
+Digite os dados da 1a pessoa:
+Nome: Carlos Silva
+Nota etapa 1: 55.5
+Nota etapa 2: 71.0
+Digite os dados da 2a pessoa:
+Nome: Ana Maria
+Nota etapa 1: 73.0
+Nota etapa 2: 89.5
+Digite os dados da 3a pessoa:
+Nome: Claudia Barros
+Nota etapa 1: 65.0
+Nota etapa 2: 75.0
+Digite os dados da 4a pessoa:
+Nome: Joaquim Minho
+Nota etapa 1: 81.5
+Nota etapa 2: 68.5
+
+### TABELA ###
+Carlos Silva, 55.5, 71.0, MEDIA = 63.25
+Ana Maria, 73.0, 89.5, MEDIA = 81.25
+Claudia Barros, 65.0, 75.0, MEDIA = 70.00
+Joaquim Minho, 81.5, 68.5, MEDIA = 75.00
+
+### PESSOAS APROVADAS ###
+Ana Maria
+Claudia Barros
+Joaquim Minho
+
+Porcentagem de aprovação: 75.0 %
+Maior média: Ana Maria
+Nota média dos aprovados: 75.42
+Qual a quantidade de pessoas? 1
+Digite os dados da 1a pessoa:
+Nome: Carlos Silva
+Nota etapa 1: 55.5
+Nota etapa 2: 71.0
+
+### TABELA ###
+Carlos Silva, 55.5, 71.0, MEDIA = 63.25
+### PESSOAS APROVADAS ###
+Porcentagem de aprovação: 0.0 %
+Maior média: Carlos Silva
+Não há candidatos aprovados
